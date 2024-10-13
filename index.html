@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.bin-File Generator</title>
+    <link rel="stylesheet" href="style.css?<?php echo(time());?>">
+</head>
+    <div class="nav-links-index">
+
+    <body>
+
+        <div class="container">
+            <h1>.bin-File Generator</h1>
+            <div class="form-group">
+                <label for="fileName">Filename (e.g. my_file.bin):</label>
+                <input type="text" id="fileName" class="input" value="idk.bin" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="fileSize">Size in MB:</label>
+                <input type="number" id="fileSize" class="input" value="1" min="1">
+            </div>
+            <button id="generateButton" class="button_new">Generate File locally</button>
+    <script>
+        document.getElementById('generateButton').addEventListener('click', function() {
+            const fileName = document.getElementById('fileName').value;
+            const sizeMb = parseInt(document.getElementById('fileSize').value);
+            const sizeBytes = sizeMb * 1024 * 1024;
+
+            const randomData = new Uint8Array(sizeBytes);
+            for (let i = 0; i < sizeBytes; i++) {
+                randomData[i] = Math.floor(Math.random() * 256);
+            }
+
+            
+            const blob = new Blob([randomData], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+    </div>
+</div>
+
+</body>
+</html>
